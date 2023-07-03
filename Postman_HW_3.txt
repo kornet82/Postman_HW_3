@@ -602,3 +602,38 @@ pm.test("Проверить схему", () =>{pm.response.to.have.jsonSchema(sc
 }
 7) переходим к следующей итерации
 
+
+// Получение списка валют
+pm.sendRequest('https://api.example.com/currencies', function (err, response) {
+  if (response.code === 200) {
+    var data = JSON.parse(response.body);
+    
+    // Итерация по списку валют
+    for (var i = 0; i < data.currencies.length; i++) {
+      var currency = data.currencies[i];
+      
+      // Получение курса каждой валюты
+      pm.sendRequest(`https://api.example.com/rates/${currency.code}`, function (err, response) {
+        if (response.code === 500) {
+          // Переход к следующей итерации в случае ошибки 500
+          return;
+        } else if (response.code === 200) {
+          var rateData = JSON.parse(response.body);
+          
+          if (rateData.hasOwnProperty('Cur_OfficialRate')) {
+            // Вывод информации о валюте в консоль
+            console.log('Currency: ' + currency.code);
+            console.log('ID: ' + rateData.Cur_ID);
+            console.log('Name: ' + rateData.Cur_Name);
+            console.log('Official Rate: ' + rateData.Cur_OfficialRate);
+            console.log('Scale: ' + rateData.Cur_Scale);
+            console.log('Date: ' + rateData.Date);
+          }
+        }
+      });
+    }
+  }
+});
+
+
+
