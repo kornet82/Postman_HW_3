@@ -336,12 +336,79 @@ Resp.
 
 Тесты:
 1) Статус код 200
-2) Проверка структуры json в ответе.
-3) В ответе указаны коэффициенты умножения weight, напишите тесты по проверке правильности результата перемножения на коэффициент.
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
 
+2) Проверка структуры json в ответе.
+var schema = {
+    "schema": "https://json-schema.org/draft/2019-09/schema",
+    "id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "required": [
+        "age",
+        "daily_food",
+        "daily_sleep",
+        "name"
+    ],
+    "properties": {
+        "age": {
+            "type": "integer",
+            "default": 0,
+            "title": "The age Schema",
+            "examples": [
+                5
+            ]
+        },
+        "daily_food": {
+            "type": "number",
+            "default": 0.0,
+            "title": "The daily_food Schema",
+            "examples": [
+                0.12
+            ]
+        },
+        "daily_sleep": {
+            "type": "number",
+            "default": 0.0,
+            "title": "The daily_sleep Schema",
+            "examples": [
+                25.0
+            ]
+        },
+        "name": {
+            "type": "string",
+            "default": "",
+            "title": "The name Schema",
+            "examples": [
+                "Rex"
+            ]
+        }
+    },
+    "examples": [{
+        "age": 5,
+        "daily_food": 0.12,
+        "daily_sleep": 25.0,
+        "name": "Rex"
+    }]
+}
+
+pm.test("Проверить схему", () =>{pm.response.to.have.jsonSchema(schema);});
+
+
+3) В ответе указаны коэффициенты умножения weight, напишите тесты по проверке правильности результата перемножения на коэффициент.
+pm.test("Daily_food is correct - auto", function () {
+    pm.expect(resp_daily_food).to.equal(req_weight*0.012);
+});
+
+pm.test("Daily_sleep is correct - auto", function () {
+    pm.expect(resp_daily_sleep).to.equal(req_weight*2.5);
+});
 ===================
 
-5) http://162.55.220.72:5005/get_test_user
+5) http://162.55.220.72:5006/get_test_user
 req.
 POST
 age: int
@@ -359,13 +426,36 @@ Resp.
 
 Тесты:
 1) Статус код 200
+var req_json_data = request.data
+var resp_json_data = JSON.parse(responseBody)
+var resp_age = resp_json_data.age
+var resp_name = resp_json_data.name
+var resp_salary = resp_json_data.salary
+var req_name = req_json_data.name
+var req_age = req_json_data.age
+var req_salary = req_json_data.salary
+
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
 2) Проверка структуры json в ответе.
+pm.test("Проверить схему", () =>{pm.response.to.have.jsonSchema(schema);});
+
+
 3) Проверить что занчение поля name = значению переменной name из окружения
+pm.test("Name is correct - auto", function () {
+    pm.expect(resp_name).to.equal(req_name);
+});
+
 4) Проверить что занчение поля age в ответе соответсвует отправленному в запросе значению поля age
+pm.test("Age is correct - auto", function () {
+    pm.expect(resp_age).to.equal(req_age);
+});
 
 ===================
 
-6) http://162.55.220.72:5005/currency
+6) http://162.55.220.72:5006/currency      http://54.157.99.22:80/currency
 req.
 POST
 auth_token
@@ -385,11 +475,17 @@ Resp. Передаётся список массив объектов.
 
 Тесты:
 1) Можете взять любой объект из присланного списка, используйте js random.
-В объекте возьмите Cur_ID и передать через окружение в следующий запрос.
+var resp_data = JSON.parse(responseBody)
+var set_length = resp_data.length
+var random_number = Math.floor(Math.random() * set_length-1);
+var random_Curr_id = resp_data[random_number].Cur_ID
 
+
+В объекте возьмите Cur_ID и передать через окружение в следующий запрос.
+pm.environment.set("curr_code", random_Curr_id);
  ===================
 
-7) http://162.55.220.72:5005/curr_byn
+7) http://162.55.220.72:5005/curr_byn      http://54.157.99.22:80/curr_byn
 req.
 POST
 auth_token
@@ -407,8 +503,86 @@ Resp.
 
 Тесты:
 1) Статус код 200
-2) Проверка структуры json в ответе.
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
 
+2) Проверка структуры json в ответе.
+var schema = {
+    "schema": "https://json-schema.org/draft/2019-09/schema",
+    "id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "required": [
+        "Cur_Abbreviation",
+        "Cur_ID",
+        "Cur_Name",
+        "Cur_OfficialRate",
+        "Cur_Scale",
+        "Date"
+    ],
+    "properties": {
+        "Cur_Abbreviation": {
+            "type": "string",
+            "default": "",
+            "title": "The Cur_Abbreviation Schema",
+            "examples": [
+                "JPY"
+            ]
+        },
+        "Cur_ID": {
+            "type": "integer",
+            "default": 0,
+            "title": "The Cur_ID Schema",
+            "examples": [
+                54
+            ]
+        },
+        "Cur_Name": {
+            "type": "string",
+            "default": "",
+            "title": "The Cur_Name Schema",
+            "examples": [
+                "Japanese yen"
+            ]
+        },
+        "Cur_OfficialRate": {
+            "type": "number",
+            "default": 0.0,
+            "title": "The Cur_OfficialRate Schema",
+            "examples": [
+                76.49583775160494
+            ]
+        },
+        "Cur_Scale": {
+            "type": "integer",
+            "default": 0,
+            "title": "The Cur_Scale Schema",
+            "examples": [
+                46
+            ]
+        },
+        "Date": {
+            "type": "string",
+            "default": "",
+            "title": "The Date Schema",
+            "examples": [
+                "2023-07-03"
+            ]
+        }
+    },
+    "examples": [{
+        "Cur_Abbreviation": "JPY",
+        "Cur_ID": 54,
+        "Cur_Name": "Japanese yen",
+        "Cur_OfficialRate": 76.49583775160494,
+        "Cur_Scale": 46,
+        "Date": "2023-07-03"
+    }]
+}
+
+pm.test("Проверить схему", () =>{pm.response.to.have.jsonSchema(schema);});
 
 ===============
 ***
@@ -417,7 +591,7 @@ Resp.
 3) в каждой итерации отправлять запрос на сервер для получения курса каждой валюты
 4) если возвращается 500 код, переходим к следующей итреации
 5) если получаем 200 код, проверяем response json на наличие поля "Cur_OfficialRate"
-6) если поле есть, пишем в консоль инфу про фалюту в виде response
+6) если поле есть, пишем в консоль инфу про валюту в виде response
 {
     "Cur_Abbreviation": str
     "Cur_ID": int,
