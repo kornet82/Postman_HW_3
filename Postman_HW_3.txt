@@ -603,37 +603,40 @@ pm.test("Проверить схему", () =>{pm.response.to.have.jsonSchema(sc
 7) переходим к следующей итерации
 
 
-// Получение списка валют
-pm.sendRequest('https://api.example.com/currencies', function (err, response) {
-  if (response.code === 200) {
-    var data = JSON.parse(response.body);
-    
+var resp_data = JSON.parse(responseBody);
+var set_length = resp_data.length
+// console.log(resp_data)
+
     // Итерация по списку валют
-    for (var i = 0; i < data.currencies.length; i++) {
-      var currency = data.currencies[i];
+    for (var i = 0; i < set_length; i++) {
+        const req_curr_byn = {
+        "url" : "http://54.157.99.22:80/curr_byn",
+        "method" : "POST",
+        "body" : {
+            "mode" : "formdata",
+            "formdata" : [
+                {key:"auth_token", value: pm.environment.get("token") },
+                {key:"curr_code", value: String(resp_data[i].Cur_ID) }
+            ]
+        }
+    }
       
-      // Получение курса каждой валюты
-      pm.sendRequest(`https://api.example.com/rates/${currency.code}`, function (err, response) {
-        if (response.code === 500) {
+        // Получение курса каждой валюты
+        pm.sendRequest(req_curr_byn, function (err, response) {
+        if (response.code == 500) {
           // Переход к следующей итерации в случае ошибки 500
           return;
-        } else if (response.code === 200) {
-          var rateData = JSON.parse(response.body);
+        } else if (response.code == 200) {
+          var rateData = response.json();
           
           if (rateData.hasOwnProperty('Cur_OfficialRate')) {
             // Вывод информации о валюте в консоль
-            console.log('Currency: ' + currency.code);
-            console.log('ID: ' + rateData.Cur_ID);
-            console.log('Name: ' + rateData.Cur_Name);
-            console.log('Official Rate: ' + rateData.Cur_OfficialRate);
-            console.log('Scale: ' + rateData.Cur_Scale);
-            console.log('Date: ' + rateData.Date);
+            console.log(rateData)
           }
         }
       });
-    }
-  }
-});
+    };
+
 
 
 

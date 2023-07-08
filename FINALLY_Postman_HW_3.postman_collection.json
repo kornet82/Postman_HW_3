@@ -1,0 +1,1015 @@
+{
+	"info": {
+		"_postman_id": "b3f86688-4130-4a17-ae38-d105d4b166fd",
+		"name": "Postman_HW_3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20479661"
+	},
+	"item": [
+		{
+			"name": "/login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"resp_token = pm.response.json().token",
+							"",
+							"pm.environment.set(\"token\", resp_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "Pavel",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "kornet",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/user_info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var req_rawJson_data = JSON.parse(pm.request.body.raw)",
+							"var req_salary = req_rawJson_data.salary ",
+							"var resp_Json_data = pm.response.json()",
+							"var resp_start_qa_salary = resp_Json_data.start_qa_salary",
+							"var resp_qa_salary_after_12_months = resp_Json_data.qa_salary_after_12_months",
+							"var resp_qa_salary_after_6_months = resp_Json_data.qa_salary_after_6_months",
+							"var resp_u_salary_1_5_year = resp_Json_data.person.u_salary_1_5_year",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"var schema = {",
+							"    \"schema\": \"https://json-schema.org/draft/2019-09/schema\",",
+							"    \"id\": \"http://example.com/example.json\",",
+							"    \"type\": \"object\",",
+							"    \"default\": {},",
+							"    \"title\": \"Root Schema\",",
+							"    \"required\": [",
+							"        \"person\",",
+							"        \"qa_salary_after_12_months\",",
+							"        \"qa_salary_after_6_months\",",
+							"        \"start_qa_salary\"",
+							"    ],",
+							"    \"properties\": {",
+							"        \"person\": {",
+							"            \"type\": \"object\",",
+							"            \"default\": {},",
+							"            \"title\": \"The person Schema\",",
+							"            \"required\": [",
+							"                \"u_age\",",
+							"                \"u_name\",",
+							"                \"u_salary_1_5_year\"",
+							"            ],",
+							"            \"properties\": {",
+							"                \"u_age\": {",
+							"                    \"type\": \"integer\",",
+							"                    \"default\": 0,",
+							"                    \"title\": \"The u_age Schema\",",
+							"                    \"examples\": [",
+							"                        41",
+							"                    ]",
+							"                },",
+							"                \"u_name\": {",
+							"                    \"type\": \"array\",",
+							"                    \"default\": [],",
+							"                    \"title\": \"The u_name Schema\",",
+							"                    \"items\": {",
+							"                        \"anyOf\": [{",
+							"                            \"type\": \"string\",",
+							"                            \"default\": \"\",",
+							"                            \"title\": \"A Schema\",",
+							"                            \"examples\": [",
+							"                                \"Pavel\"",
+							"                            ]",
+							"                        },",
+							"                        {",
+							"                            \"type\": \"integer\",",
+							"                            \"title\": \"A Schema\",",
+							"                            \"examples\": [",
+							"                                1000,",
+							"                                41",
+							"                            ]",
+							"                        }]",
+							"                    },",
+							"                    \"examples\": [",
+							"                        [\"Pavel\",",
+							"                            1000,",
+							"                            41",
+							"                        ]",
+							"                    ]",
+							"                },",
+							"                \"u_salary_1_5_year\": {",
+							"                    \"type\": \"integer\",",
+							"                    \"default\": 0,",
+							"                    \"title\": \"The u_salary_1_5_year Schema\",",
+							"                    \"examples\": [",
+							"                        4000",
+							"                    ]",
+							"                }",
+							"            },",
+							"            \"examples\": [{",
+							"                \"u_age\": 41,",
+							"                \"u_name\": [",
+							"                    \"Pavel\",",
+							"                    1000,",
+							"                    41",
+							"                ],",
+							"                \"u_salary_1_5_year\": 4000",
+							"            }]",
+							"        },",
+							"        \"qa_salary_after_12_months\": {",
+							"            \"type\": \"number\",",
+							"            \"default\": 0.0,",
+							"            \"title\": \"The qa_salary_after_12_months Schema\",",
+							"            \"examples\": [",
+							"                2900.0",
+							"            ]",
+							"        },",
+							"        \"qa_salary_after_6_months\": {",
+							"            \"type\": \"integer\",",
+							"            \"default\": 0,",
+							"            \"title\": \"The qa_salary_after_6_months Schema\",",
+							"            \"examples\": [",
+							"                2000",
+							"            ]",
+							"        },",
+							"        \"start_qa_salary\": {",
+							"            \"type\": \"integer\",",
+							"            \"default\": 0,",
+							"            \"title\": \"The start_qa_salary Schema\",",
+							"            \"examples\": [",
+							"                1000",
+							"            ]",
+							"        }",
+							"    },",
+							"    \"examples\": [{",
+							"        \"person\": {",
+							"            \"u_age\": 41,",
+							"            \"u_name\": [",
+							"                \"Pavel\",",
+							"                1000,",
+							"                41",
+							"            ],",
+							"            \"u_salary_1_5_year\": 4000",
+							"        },",
+							"        \"qa_salary_after_12_months\": 2900.0,",
+							"        \"qa_salary_after_6_months\": 2000,",
+							"        \"start_qa_salary\": 1000",
+							"    }]",
+							"}",
+							"",
+							"pm.test(\"Проверить схему\", () =>{pm.response.to.have.jsonSchema(schema);});",
+							"",
+							"pm.test(\"start_qa_salary is correct - auto\", function () {",
+							"    pm.expect(resp_start_qa_salary).to.equal(+req_salary);",
+							"});",
+							"",
+							"pm.test(\"qa_salary_after_6_months is correct - auto\", function () {",
+							"    pm.expect(resp_qa_salary_after_6_months).to.equal(+req_salary*2);",
+							"});",
+							"",
+							"pm.test(\"qa_salary_after_12_months is correct - auto\", function () {",
+							"    pm.expect(resp_qa_salary_after_12_months).to.equal(+req_salary*2.9);",
+							"});",
+							"",
+							"pm.test(\"u_salary_1_5_year is correct - auto\", function () {",
+							"    pm.expect(resp_u_salary_1_5_year).to.equal(+req_salary*4);",
+							"});",
+							"",
+							"pm.collectionVariables.set(\"u_salary_1_5_year\", resp_u_salary_1_5_year);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"age\": 41,\n    \"salary\": 1000,\n    \"name\": \"Pavel\",\n    \"auth_token\": \"{{token}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/user_info",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user_info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/new_data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"var resp_json_Data = JSON.parse(responseBody);",
+							"var req_json_Data = request.data",
+							"var req_name = req_json_Data.name",
+							"var req_age = req_json_Data.age",
+							"var req_salary = req_json_Data.salary",
+							"var resp_name = resp_json_Data.name",
+							"var resp_age = resp_json_Data.age",
+							"var resp_salary = resp_json_Data.salary",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"start_qa_salary is correct - auto\", function () {",
+							"    pm.expect(resp_salary[0]).to.equal(+req_salary);",
+							"});",
+							"",
+							"pm.test(\"salary[1] is correct - auto\", function () {",
+							"    pm.expect(+resp_salary[1]).to.equal(req_salary*2);",
+							"});",
+							"",
+							"pm.test(\"salary[2] is correct - auto\", function () {",
+							"    pm.expect(+resp_salary[2]).to.equal(req_salary*3);",
+							"});",
+							"",
+							"pm.test(\"salary[2] > than salary[1]  - auto\", function () {",
+							"    pm.expect(+resp_salary[2]).greaterThan(+resp_salary[1])",
+							"});",
+							"",
+							"pm.test(\"salary[2] > than salary[0] - auto\", function () {",
+							"    pm.expect(+resp_salary[2]).greaterThan(resp_salary[0])",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"var schema = {",
+							"    \"schema\": \"https://json-schema.org/draft/2019-09/schema\",",
+							"    \"id\": \"http://example.com/example.json\",",
+							"    \"type\": \"object\",",
+							"    \"default\": {},",
+							"    \"title\": \"Root Schema\",",
+							"    \"required\": [",
+							"        \"age\",",
+							"        \"name\",",
+							"        \"salary\"",
+							"    ],",
+							"    \"properties\": {",
+							"        \"age\": {",
+							"            \"type\": \"integer\",",
+							"            \"default\": 0,",
+							"            \"title\": \"The age Schema\",",
+							"            \"examples\": [",
+							"                41",
+							"            ]",
+							"        },",
+							"        \"name\": {",
+							"            \"type\": \"string\",",
+							"            \"default\": \"\",",
+							"            \"title\": \"The name Schema\",",
+							"            \"examples\": [",
+							"                \"Pavel\"",
+							"            ]",
+							"        },",
+							"        \"salary\": {",
+							"            \"type\": \"array\",",
+							"            \"default\": [],",
+							"            \"title\": \"The salary Schema\",",
+							"            \"items\": {",
+							"                \"anyOf\": [{",
+							"                    \"type\": \"integer\",",
+							"                    \"default\": 0,",
+							"                    \"title\": \"A Schema\",",
+							"                    \"examples\": [",
+							"                        1000",
+							"                    ]",
+							"                },",
+							"                {",
+							"                    \"type\": \"string\",",
+							"                    \"title\": \"A Schema\",",
+							"                    \"examples\": [",
+							"                        \"2000\",",
+							"                        \"3000\"",
+							"                    ]",
+							"                }]",
+							"            },",
+							"            \"examples\": [",
+							"                [1000,",
+							"                    \"2000\",",
+							"                    \"3000\"",
+							"                ]",
+							"            ]",
+							"        }",
+							"    },",
+							"    \"examples\": [{",
+							"        \"age\": 41,",
+							"        \"name\": \"Pavel\",",
+							"        \"salary\": [",
+							"            1000,",
+							"            \"2000\",",
+							"            \"3000\"",
+							"        ]",
+							"    }]",
+							"}",
+							"",
+							"pm.test(\"Проверить схему\", () =>{pm.response.to.have.jsonSchema(schema);});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "{{age}}",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "1000",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "{{name}}",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/new_data",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"new_data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/test_pet_info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resp_json_Data = JSON.parse(responseBody);",
+							"var req_json_Data = request.data",
+							"var req_name = req_json_Data.name",
+							"var req_age = req_json_Data.age",
+							"var req_weight = req_json_Data.weight",
+							"var resp_name = resp_json_Data.name",
+							"var resp_daily_food = resp_json_Data.daily_food",
+							"var resp_daily_sleep = resp_json_Data.daily_sleep",
+							"var resp_age = resp_json_Data.age",
+							"",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var schema = {",
+							"    \"schema\": \"https://json-schema.org/draft/2019-09/schema\",",
+							"    \"id\": \"http://example.com/example.json\",",
+							"    \"type\": \"object\",",
+							"    \"default\": {},",
+							"    \"title\": \"Root Schema\",",
+							"    \"required\": [",
+							"        \"age\",",
+							"        \"daily_food\",",
+							"        \"daily_sleep\",",
+							"        \"name\"",
+							"    ],",
+							"    \"properties\": {",
+							"        \"age\": {",
+							"            \"type\": \"integer\",",
+							"            \"default\": 0,",
+							"            \"title\": \"The age Schema\",",
+							"            \"examples\": [",
+							"                5",
+							"            ]",
+							"        },",
+							"        \"daily_food\": {",
+							"            \"type\": \"number\",",
+							"            \"default\": 0.0,",
+							"            \"title\": \"The daily_food Schema\",",
+							"            \"examples\": [",
+							"                0.12",
+							"            ]",
+							"        },",
+							"        \"daily_sleep\": {",
+							"            \"type\": \"number\",",
+							"            \"default\": 0.0,",
+							"            \"title\": \"The daily_sleep Schema\",",
+							"            \"examples\": [",
+							"                25.0",
+							"            ]",
+							"        },",
+							"        \"name\": {",
+							"            \"type\": \"string\",",
+							"            \"default\": \"\",",
+							"            \"title\": \"The name Schema\",",
+							"            \"examples\": [",
+							"                \"Rex\"",
+							"            ]",
+							"        }",
+							"    },",
+							"    \"examples\": [{",
+							"        \"age\": 5,",
+							"        \"daily_food\": 0.12,",
+							"        \"daily_sleep\": 25.0,",
+							"        \"name\": \"Rex\"",
+							"    }]",
+							"}",
+							"",
+							"pm.test(\"Проверить схему\", () =>{pm.response.to.have.jsonSchema(schema);});",
+							"",
+							"pm.test(\"Daily_food is correct - auto\", function () {",
+							"    pm.expect(resp_daily_food).to.equal(req_weight*0.012);",
+							"});",
+							"",
+							"pm.test(\"Daily_sleep is correct - auto\", function () {",
+							"    pm.expect(resp_daily_sleep).to.equal(req_weight*2.5);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "weight",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Rex",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/test_pet_info",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"test_pet_info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/get_test_user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var req_json_data = request.data",
+							"var resp_json_data = JSON.parse(responseBody)",
+							"var resp_age = resp_json_data.age",
+							"var resp_name = resp_json_data.name",
+							"var resp_salary = resp_json_data.salary",
+							"var req_name = req_json_data.name",
+							"var req_age = req_json_data.age",
+							"var req_salary = req_json_data.salary",
+							"",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"var schema = {",
+							"    \"schema\": \"https://json-schema.org/draft/2019-09/schema\",",
+							"    \"id\": \"http://example.com/example.json\",",
+							"    \"type\": \"object\",",
+							"    \"default\": {},",
+							"    \"title\": \"Root Schema\",",
+							"    \"required\": [",
+							"        \"age\",",
+							"        \"family\",",
+							"        \"name\",",
+							"        \"salary\"",
+							"    ],",
+							"    \"properties\": {",
+							"        \"age\": {",
+							"            \"type\": \"string\",",
+							"            \"default\": \"\",",
+							"            \"title\": \"The age Schema\",",
+							"            \"examples\": [",
+							"                \"41\"",
+							"            ]",
+							"        },",
+							"        \"family\": {",
+							"            \"type\": \"object\",",
+							"            \"default\": {},",
+							"            \"title\": \"The family Schema\",",
+							"            \"required\": [",
+							"                \"children\",",
+							"                \"u_salary_1_5_year\"",
+							"            ],",
+							"            \"properties\": {",
+							"                \"children\": {",
+							"                    \"type\": \"array\",",
+							"                    \"default\": [],",
+							"                    \"title\": \"The children Schema\",",
+							"                    \"items\": {",
+							"                        \"type\": \"array\",",
+							"                        \"title\": \"A Schema\",",
+							"                        \"items\": {",
+							"                            \"anyOf\": [{",
+							"                                \"type\": \"string\",",
+							"                                \"title\": \"A Schema\",",
+							"                                \"examples\": [",
+							"                                    \"Alex\",",
+							"                                    \"Kate\"",
+							"                                ]",
+							"                            },",
+							"                            {",
+							"                                \"type\": \"integer\",",
+							"                                \"title\": \"A Schema\",",
+							"                                \"examples\": [",
+							"                                    24,",
+							"                                    12",
+							"                                ]",
+							"                            }]",
+							"                        },",
+							"                        \"examples\": [",
+							"                            [\"Alex\",",
+							"                                24",
+							"                            ],",
+							"                            [\"Kate\",",
+							"                                12",
+							"                            ]",
+							"                        ]",
+							"                    },",
+							"                    \"examples\": [",
+							"                        [",
+							"                            [\"Alex\",",
+							"                                24",
+							"                            ],",
+							"                            [\"Kate\",",
+							"                                12",
+							"                            ]",
+							"                        ]",
+							"                    ]",
+							"                },",
+							"                \"u_salary_1_5_year\": {",
+							"                    \"type\": \"integer\",",
+							"                    \"default\": 0,",
+							"                    \"title\": \"The u_salary_1_5_year Schema\",",
+							"                    \"examples\": [",
+							"                        4000",
+							"                    ]",
+							"                }",
+							"            },",
+							"            \"examples\": [{",
+							"                \"children\": [",
+							"                    [\"Alex\",",
+							"                        24",
+							"                    ],",
+							"                    [\"Kate\",",
+							"                        12",
+							"                    ]",
+							"                ],",
+							"                \"u_salary_1_5_year\": 4000",
+							"            }]",
+							"        },",
+							"        \"name\": {",
+							"            \"type\": \"string\",",
+							"            \"default\": \"\",",
+							"            \"title\": \"The name Schema\",",
+							"            \"examples\": [",
+							"                \"Pavel\"",
+							"            ]",
+							"        },",
+							"        \"salary\": {",
+							"            \"type\": \"integer\",",
+							"            \"default\": 0,",
+							"            \"title\": \"The salary Schema\",",
+							"            \"examples\": [",
+							"                1000",
+							"            ]",
+							"        }",
+							"    },",
+							"    \"examples\": [{",
+							"        \"age\": \"41\",",
+							"        \"family\": {",
+							"            \"children\": [",
+							"                [\"Alex\",",
+							"                    24",
+							"                ],",
+							"                [\"Kate\",",
+							"                    12",
+							"                ]",
+							"            ],",
+							"            \"u_salary_1_5_year\": 4000",
+							"        },",
+							"        \"name\": \"Pavel\",",
+							"        \"salary\": 1000",
+							"    }]",
+							"}",
+							"",
+							"",
+							"pm.test(\"Проверить схему\", () =>{pm.response.to.have.jsonSchema(schema);});",
+							"",
+							"pm.test(\"Name is correct - auto\", function () {",
+							"    pm.expect(resp_name).to.equal(req_name);",
+							"});",
+							"",
+							"pm.test(\"Age is correct - auto\", function () {",
+							"    pm.expect(resp_age).to.equal(req_age);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "{{age}}",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "{{salary}}",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "{{name}}",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/get_test_user",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"get_test_user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/currency",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resp_data = JSON.parse(responseBody)",
+							"var set_length = resp_data.length",
+							"var random_number = Math.floor(Math.random() * set_length-1);",
+							"var random_Curr_id = resp_data[random_number].Cur_ID",
+							"",
+							"",
+							"pm.environment.set(\"curr_code\", random_Curr_id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://54.157.99.22:80/currency",
+					"protocol": "http",
+					"host": [
+						"54",
+						"157",
+						"99",
+						"22"
+					],
+					"port": "80",
+					"path": [
+						"currency"
+					],
+					"query": [
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/curr_byn",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var schema = {",
+							"    \"schema\": \"https://json-schema.org/draft/2019-09/schema\",",
+							"    \"id\": \"http://example.com/example.json\",",
+							"    \"type\": \"object\",",
+							"    \"default\": {},",
+							"    \"title\": \"Root Schema\",",
+							"    \"required\": [",
+							"        \"Cur_Abbreviation\",",
+							"        \"Cur_ID\",",
+							"        \"Cur_Name\",",
+							"        \"Cur_OfficialRate\",",
+							"        \"Cur_Scale\",",
+							"        \"Date\"",
+							"    ],",
+							"    \"properties\": {",
+							"        \"Cur_Abbreviation\": {",
+							"            \"type\": \"string\",",
+							"            \"default\": \"\",",
+							"            \"title\": \"The Cur_Abbreviation Schema\",",
+							"            \"examples\": [",
+							"                \"JPY\"",
+							"            ]",
+							"        },",
+							"        \"Cur_ID\": {",
+							"            \"type\": \"integer\",",
+							"            \"default\": 0,",
+							"            \"title\": \"The Cur_ID Schema\",",
+							"            \"examples\": [",
+							"                54",
+							"            ]",
+							"        },",
+							"        \"Cur_Name\": {",
+							"            \"type\": \"string\",",
+							"            \"default\": \"\",",
+							"            \"title\": \"The Cur_Name Schema\",",
+							"            \"examples\": [",
+							"                \"Japanese yen\"",
+							"            ]",
+							"        },",
+							"        \"Cur_OfficialRate\": {",
+							"            \"type\": \"number\",",
+							"            \"default\": 0.0,",
+							"            \"title\": \"The Cur_OfficialRate Schema\",",
+							"            \"examples\": [",
+							"                76.49583775160494",
+							"            ]",
+							"        },",
+							"        \"Cur_Scale\": {",
+							"            \"type\": \"integer\",",
+							"            \"default\": 0,",
+							"            \"title\": \"The Cur_Scale Schema\",",
+							"            \"examples\": [",
+							"                46",
+							"            ]",
+							"        },",
+							"        \"Date\": {",
+							"            \"type\": \"string\",",
+							"            \"default\": \"\",",
+							"            \"title\": \"The Date Schema\",",
+							"            \"examples\": [",
+							"                \"2023-07-03\"",
+							"            ]",
+							"        }",
+							"    },",
+							"    \"examples\": [{",
+							"        \"Cur_Abbreviation\": \"JPY\",",
+							"        \"Cur_ID\": 54,",
+							"        \"Cur_Name\": \"Japanese yen\",",
+							"        \"Cur_OfficialRate\": 76.49583775160494,",
+							"        \"Cur_Scale\": 46,",
+							"        \"Date\": \"2023-07-03\"",
+							"    }]",
+							"}",
+							"",
+							"pm.test(\"Проверить схему\", () =>{pm.response.to.have.jsonSchema(schema);});",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						},
+						{
+							"key": "curr_code",
+							"value": "{{curr_code}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://54.157.99.22:80/curr_byn",
+					"protocol": "http",
+					"host": [
+						"54",
+						"157",
+						"99",
+						"22"
+					],
+					"port": "80",
+					"path": [
+						"curr_byn"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/***",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resp_data = JSON.parse(responseBody);",
+							"var set_length = resp_data.length",
+							"// console.log(resp_data)",
+							"",
+							"    // Итерация по списку валют",
+							"    for (var i = 0; i < set_length; i++) {",
+							"        const req_curr_byn = {",
+							"        \"url\" : \"http://54.157.99.22:80/curr_byn\",",
+							"        \"method\" : \"POST\",",
+							"        \"body\" : {",
+							"            \"mode\" : \"formdata\",",
+							"            \"formdata\" : [",
+							"                {key:\"auth_token\", value: pm.environment.get(\"token\") },",
+							"                {key:\"curr_code\", value: String(resp_data[i].Cur_ID) }",
+							"            ]",
+							"        }",
+							"    }",
+							"      ",
+							"        // Получение курса каждой валюты",
+							"        pm.sendRequest(req_curr_byn, function (err, response) {",
+							"        if (response.code == 500) {",
+							"          // Переход к следующей итерации в случае ошибки 500",
+							"          return;",
+							"        } else if (response.code == 200) {",
+							"          var rateData = response.json();",
+							"          ",
+							"          if (rateData.hasOwnProperty('Cur_OfficialRate')) {",
+							"            // Вывод информации о валюте в консоль",
+							"            console.log(rateData)",
+							"          }",
+							"        }",
+							"      });",
+							"    };",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://54.157.99.22:80/currency",
+					"protocol": "http",
+					"host": [
+						"54",
+						"157",
+						"99",
+						"22"
+					],
+					"port": "80",
+					"path": [
+						"currency"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
